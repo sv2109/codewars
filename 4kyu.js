@@ -74,3 +74,68 @@ function permutations(string) {
     return acc
   }, [])  
 }
+
+/**
+ * Large Factorials
+ * https://www.codewars.com/kata/557f6437bf8dcdd135000010
+ * 
+ * Your mission is simple: write a function that takes an integer n and returns the value of n!
+ * 
+ */
+ function factorial(n){
+  let f = 1;
+  while (n > 0) {
+    f = multiply(f, n--)
+  }
+  return f
+}
+
+function multiply(a, b) {
+  
+  a = numberToArr(a).reverse()
+  b = numberToArr(b).reverse()
+
+  const [n1, n2] = b.length > a.length ? [b, a] : [a, b]
+  
+  return n1.reduce((result, number1, index) => {
+    let row = n2.reduce(([result, memory], number2, index) => {
+      let total = number1 * number2 + memory
+      memory = total / 10 | 0
+      memory && (total -= memory * 10)
+      result.push(total)
+      index == (n2.length-1) && memory && result.push(memory) 
+      return [result, memory]
+    }, [[],0])[0].reverse()
+
+    row = [...row, ...Array(index).fill(0)]
+
+    result.push(row)
+    return result
+  }, [])
+  .reduce((result, arr) => {
+    result = add(result, arr)
+    return result
+  }, []).join('')
+}
+
+function add(a, b) {
+  
+  a.reverse()
+  b.reverse()
+
+  const [n1, n2] = b.length > a.length ? [b, a] : [a, b]
+  
+  return n1.reduce(([result, memory], number, index) => {
+    let sum = number + (n2[index] || 0) + memory
+    memory = sum / 10 | 0
+    memory && (sum -= memory * 10)
+    result.push(sum)
+    index == (n1.length-1) && memory && result.push(memory) 
+    return [result, memory]
+  }, [[],0])[0].reverse()
+}
+
+function numberToArr(n) {
+  return [...('' + n)].map(Number)
+}
+

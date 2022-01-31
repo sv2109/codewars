@@ -72,3 +72,18 @@ function listSquared(a, b) {
   }    
   return result
 }
+
+/**
+ * Number of trailing zeros of N!
+ * https://www.codewars.com/kata/52f787eb172a8b4ae1000a34
+ * 
+ * Write a program that will calculate the number of trailing zeros in a factorial of a given number.
+ * Be careful 1000! has 2568 digits...
+ */
+function zeros (n) {
+  let result = 0
+ 
+  for (let i = 5; Math.floor(n / i) >= 1; i *= 5) result += Math.floor(n / i)
+  
+  return result
+}
